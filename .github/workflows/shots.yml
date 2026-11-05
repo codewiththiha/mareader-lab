@@ -1,0 +1,40 @@
+name: Lab screenshots
+on:
+  workflow_dispatch:
+    inputs:
+      theme:
+        description: Preview theme
+        type: choice
+        options: [sepia, light, dark]
+        default: sepia
+      section:
+        description: Section to capture
+        type: choice
+        options: [dock, player, toasts, menus, marks]
+        default: dock
+jobs:
+  shots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: best_ui_review
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: best_ui_review/package-lock.json
+      - run: npm ci && npm install --no-save --package-lock=false playwright
+      - run: npx playwright install --with-deps chromium
+      - run: npm run dev -- --host 127.0.0.1 > /tmp/lab-vite.log 2>&1 &
+      - run: node tools/shots.mjs
+        env:
+          SHOT_THEME: ${{ inputs.theme }}
+          SHOT_SECTION: ${{ inputs.section }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lab-shots
+          path: /tmp/lab-shots/*.png
+          retention-days: 1
