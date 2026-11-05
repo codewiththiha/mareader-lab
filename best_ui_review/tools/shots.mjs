@@ -15,7 +15,7 @@ try {
   await page.getByRole('button', { name: theme, exact: true }).first().click();
   const target = page.locator(`#${section}`);
   if (section === 'dock') {
-    await target.getByRole('button', { name: 'Proposed (edge tabs)' }).click();
+    await target.getByRole('radio', { name: 'Proposed (edge tabs)' }).click();
     const stage = target.locator('[data-mode="proposed"]');
     await stage.scrollIntoViewIfNeeded();
     await stage.screenshot({ path: `${out}/dock-proposed.png` });
