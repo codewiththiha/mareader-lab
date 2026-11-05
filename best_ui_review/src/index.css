@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@font-face { font-family: "Inter"; src: url("/fonts/Inter-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("/fonts/Inter-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("/fonts/Inter-SemiBold.ttf") format("truetype"); font-weight: 600 700; font-display: swap; }
+@font-face { font-family: "Literata"; src: url("/fonts/Literata-Variable.ttf") format("truetype"); font-weight: 200 900; font-display: swap; }
+
+/* Tokens mirror crates/appearance/src/tokens.rs + crates/ui/src/theme.rs.
+   Sepia values were sampled from docs/screenshots/readme/*.jpg. */
+/* Sepia: sampled from the HEAD shot-tool renders (preset=sepia) — lighter than the older README jpgs. */
+:root, [data-theme="sepia"] {
+  --paper: #fdede0;
+  --surface: #fbe6d2;
+  --card: #f9e3d1;
+  --ink: #32261c;
+  --muted: #7b6e63;
+  --line: #edd0b9;
+  --track: #d9b89c;
+  --accent: #884b00;
+  --on-accent: #fff6ee;
+  --accent-soft: #fcc89d;
+  --chip: #f3d9c4;
+  --toast-wash: #eacfb6;
+  --mark-round: #daba99;
+  --danger: #b4321f;
+  --caution: #a8650a;
+  --ok: #4f7a2a;
+  --shadow: rgba(40, 24, 6, 0.22);
+  --cefr-red: #e8786a;
+  --hl-raw: #efee00;
+  --grain-opacity: 0.18;
+  --show-bg: #f3ece1;
+  --show-panel: #fbf7f1;
+  --show-ink: #241c13;
+  --show-muted: #7b6c5c;
+  --show-line: #e4d8c6;
+}
+[data-theme="light"] {
+  --paper: #ffffff;
+  --surface: #ebedef;
+  --card: #f1f3f8;
+  --ink: #1f2937;
+  --muted: #6b7280;
+  --line: #dadce1;
+  --track: #b9bec7;
+  --accent: #2563eb;
+  --on-accent: #ffffff;
+  --accent-soft: #dbeafe;
+  --chip: #e2e6ec;
+  --toast-wash: #dfe3e8;
+  --mark-round: #cfd5de;
+  --danger: #dc2626;
+  --caution: #b45309;
+  --ok: #15803d;
+  --shadow: rgba(0, 0, 0, 0.2);
+  --cefr-red: #f19a8f;
+  --hl-raw: #ffef3a;
+  --grain-opacity: 0.06;
+  --show-bg: #f5f6f8;
+  --show-panel: #ffffff;
+  --show-ink: #111827;
+  --show-muted: #6b7280;
+  --show-line: #e5e7eb;
+}
+[data-theme="dark"] {
+  --paper: #131316;
+  --surface: #16161a;
+  --card: #212126;
+  --ink: #e5e7eb;
+  --muted: #9ca3af;
+  --line: #2b2b31;
+  --track: #4a4a52;
+  --accent: #60a5fa;
+  --on-accent: #0b1220;
+  --accent-soft: #1d2b3a;
+  --chip: #26262c;
+  --toast-wash: #24242a;
+  --mark-round: #303038;
+  --danger: #f87171;
+  --caution: #fbbf24;
+  --ok: #4ade80;
+  --shadow: rgba(0, 0, 0, 0.55);
+  --cefr-red: #a54a40;
+  --hl-raw: #c8c200;
+  --grain-opacity: 0.08;
+  --show-bg: #0c0c0e;
+  --show-panel: #141417;
+  --show-ink: #ececf0;
+  --show-muted: #8d8d97;
+  --show-line: #24242a;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-track: var(--track);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-chip: var(--chip);
+  --color-wash: var(--toast-wash);
+  --color-mround: var(--mark-round);
+  --color-danger: var(--danger);
+  --color-caution: var(--caution);
+  --color-ok: var(--ok);
+  --color-sbg: var(--show-bg);
+  --color-spanel: var(--show-panel);
+  --color-sink: var(--show-ink);
+  --color-smuted: var(--show-muted);
+  --color-sline: var(--show-line);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Literata", Georgia, serif;
+  --font-book: "Times New Roman", Times, "Literata", serif;
+}
+
+html, body { background: var(--show-bg); color: var(--show-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+
+/* The page's film grain (crates/appearance/src/grain.rs is animated; static here). */
+.grain { position: relative; z-index: 0; isolation: isolate; background-color: var(--paper); }
+.grain::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit; opacity: var(--grain-opacity); mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .22  0 0 0 0 .12  0 0 0 1.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+[data-theme="dark"] .grain::before { mix-blend-mode: screen; }
+
+/* egui popup shadow: black at 60 (light) / 120 (dark). */
+.pop { box-shadow: 0 8px 24px -4px var(--shadow), 0 2px 6px -2px var(--shadow); }
+.pop-lg { box-shadow: 0 18px 48px -10px var(--shadow), 0 4px 12px -4px var(--shadow); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+.thin-scroll::-webkit-scrollbar { width: 6px; }
+.thin-scroll::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes bars { 0%,100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
+@keyframes pulse-edge { 0%,100% { opacity: .35; } 50% { opacity: .9; } }
+.anim-rise { animation: rise .2s cubic-bezier(.2,.8,.2,1) both; }
+.bar-dance { transform-origin: bottom; animation: bars .9s ease-in-out infinite; }
+.edge-pulse { animation: pulse-edge 1.2s ease-in-out infinite; }
+
+.fade-x { mask-image: linear-gradient(90deg, transparent, #000 18px, #000 calc(100% - 18px), transparent); }
+
+input[type=range].egui { -webkit-appearance: none; appearance: none; height: 20px; background: transparent; }
+input[type=range].egui::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: var(--line); }
+input[type=range].egui::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); margin-top: -5px; }
+input[type=range].egui::-moz-range-track { height: 4px; border-radius: 2px; background: var(--line); }
+input[type=range].egui::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 50%; background: var(--accent); }

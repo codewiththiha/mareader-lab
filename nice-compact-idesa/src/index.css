@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+/* Latin subsets only, from the fontsource packages, to keep the single-file build small. */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Literata Variable";
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("../node_modules/@fontsource-variable/literata/files/literata-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Literata Variable";
+  font-style: italic;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("../node_modules/@fontsource-variable/literata/files/literata-latin-wght-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* The live look. The root of the kit sets these from lib/look.tsx,
+   so every component reads the current paper, ink, surface and reading size. */
+:root {
+  --paper: #ffffff;
+  --paper-base: #ffffff;
+  --ink: #1f2937;
+  --muted: #6b7280;
+  --surface: #ebedef;
+  --line: #dadce1;
+  --accent: #2563eb;
+  --accent-soft: #dbeafe;
+  --on-accent: #ffffff;
+  --grain: 0;
+  --read-size: 17px;
+  --read-lh: 1.6;
+  --read-gap: 0.6em;
+}
+
+/* "inline" makes utilities read the variables at the element itself,
+   so a nested preview can carry its own look. */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-base: var(--paper-base);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
+}
+
+@theme {
+  --font-ui: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-reading: "Literata Variable", "Literata", Georgia, "Iowan Old Style", serif;
+
+  --color-success: #15803d;
+  --color-warning: #b45309;
+  --color-danger: #dc2626;
+
+  --shadow-float: 0 24px 48px -16px rgb(0 0 0 / 0.36), 0 3px 10px rgb(0 0 0 / 0.1);
+  --shadow-pop: 0 14px 32px -12px rgb(0 0 0 / 0.3), 0 1px 4px rgb(0 0 0 / 0.08);
+  --shadow-seg: 0 1px 2px rgb(0 0 0 / 0.16), 0 0 0 0.5px rgb(0 0 0 / 0.08);
+  --shadow-key: inset 0 -1.5px 0 rgb(0 0 0 / 0.16);
+
+  --animate-rise: rise 260ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-breathe: breathe 2.6s ease-in-out infinite;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes grain-shift {
+  0% { background-position: 0 0; }
+  100% { background-position: 90px 60px; }
+}
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: var(--font-ui);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+  ::selection {
+    background: color-mix(in oklch, var(--accent) 30%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+@layer components {
+  /* Range input drawn to match the kit; --p is the fill, --track an optional custom track. */
+  .range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 20px;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .range:focus {
+    outline: none;
+  }
+  .range::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 999px;
+    background: var(
+      --track,
+      linear-gradient(
+        to right,
+        var(--accent) var(--p, 50%),
+        color-mix(in oklch, var(--ink) 16%, transparent) var(--p, 50%)
+      )
+    );
+  }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    margin-top: -6px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--paper-base);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.3), 0 0 0 1px color-mix(in oklch, var(--ink) 18%, transparent);
+    transition: transform 120ms ease;
+  }
+  .range:active::-webkit-slider-thumb {
+    transform: scale(1.15);
+  }
+  .range:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px color-mix(in oklch, var(--accent) 40%, transparent);
+  }
+  .range::-moz-range-track {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--track, color-mix(in oklch, var(--ink) 16%, transparent));
+  }
+  .range::-moz-range-progress {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--accent);
+  }
+  .range.rainbow::-moz-range-progress {
+    display: none;
+  }
+  .range::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--paper-base);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.3), 0 0 0 1px color-mix(in oklch, var(--ink) 18%, transparent);
+  }
+
+  /* Reading type follows the look's size, line height and paragraph gap. */
+  .reading {
+    font-family: var(--font-reading);
+    font-size: var(--read-size);
+    line-height: var(--read-lh);
+  }
+  .reading p + p {
+    margin-top: var(--read-gap);
+  }
+
+  /* Film grain: a noise tile over the element, strength from --grain (0 = none). */
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: var(--grain);
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  .grain-motion::after {
+    animation: grain-shift 0.9s steps(6) infinite;
+  }
+
+  .thin-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--ink) 22%, transparent) transparent;
+  }
+}

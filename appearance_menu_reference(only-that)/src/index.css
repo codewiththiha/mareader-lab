@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-lab-bg: #0d0b09;
+  --color-lab-panel: #16130f;
+  --color-lab-raised: #1e1a15;
+  --color-lab-line: #2c2620;
+  --color-lamp: #f5b83d;
+  --color-lamp-deep: #d99a22;
+  --color-paper: #f4eee1;
+  --color-paper-dim: #e7ddc8;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0d0b09;
+  color: #ede8de;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #f5b83d;
+  color: #14100a;
+}
+
+/* thin dark scrollbars for demo panes */
+.slim-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.slim-scroll::-webkit-scrollbar-track { background: transparent; }
+.slim-scroll::-webkit-scrollbar-thumb { background: #3a332b; border-radius: 8px; }
+.slim-scroll::-webkit-scrollbar-thumb:hover { background: #4a4238; }
+
+/* dotted lab-grid texture (radial dots, not a gradient wash) */
+.dotgrid {
+  background-image: radial-gradient(#2b251d 1px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+.dotgrid-fine {
+  background-image: radial-gradient(#38312a 1px, transparent 1.1px);
+  background-size: 14px 14px;
+}
+
+/* paper grain for the mock reader page */
+.paper-noise {
+  background-image: radial-gradient(#00000010 1px, transparent 1.1px);
+  background-size: 5px 5px;
+}
+
+/* dancing bars for the player */
+@keyframes bar-dance {
+  0%, 100% { transform: scaleY(0.35); }
+  50% { transform: scaleY(1); }
+}
+.bar-dance { transform-origin: bottom; animation: bar-dance 0.9s ease-in-out infinite; }
+
+/* soft rise used by demo cards */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise-in { animation: rise-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes ping-soft {
+  0% { transform: scale(1); opacity: 0.7; }
+  80%, 100% { transform: scale(1.9); opacity: 0; }
+}
+.ping-soft { animation: ping-soft 1.6s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+/* knob focus ring */
+.knob-focus:focus-visible {
+  outline: 2px solid #f5b83d;
+  outline-offset: 3px;
+  border-radius: 9999px;
+}
+
+/* range input restyle for demo sliders */
+input[type="range"].demo-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  background: #3a332b;
+  cursor: pointer;
+}
+input[type="range"].demo-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #f5b83d;
+  border: 2px solid #14100a;
+  box-shadow: 0 0 0 1.5px #f5b83d;
+}
+input[type="range"].demo-range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: #f5b83d;
+  border: 2px solid #14100a;
+  box-shadow: 0 0 0 1.5px #f5b83d;
+}
