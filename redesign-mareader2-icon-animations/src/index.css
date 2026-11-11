@@ -1,0 +1,227 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-raise: var(--raise);
+  --color-sunk: var(--sunk);
+  --font-display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* The app's four base modes: docs/design.md § Colour. */
+.theme-light {
+  --paper: #ffffff;
+  --ink: #1f2937;
+  --muted: #6b7280;
+  --surface: #ebedef;
+  --line: #dadce1;
+  --accent: #2563eb;
+  --accent-soft: #dbeafe;
+  --raise: #f6f7f8;
+  --sunk: #f1f2f4;
+  --shadow: 0 8px 24px rgb(0 0 0 / 0.14);
+  color-scheme: light;
+}
+.theme-dark {
+  --paper: #131316;
+  --ink: #e5e7eb;
+  --muted: #9ca3af;
+  --surface: #16161a;
+  --line: #2b2b31;
+  --accent: #60a5fa;
+  --accent-soft: #1d2b3a;
+  --raise: #1a1a1f;
+  --sunk: #0e0e11;
+  --shadow: 0 8px 24px rgb(0 0 0 / 0.47);
+  color-scheme: dark;
+}
+.theme-dim {
+  --paper: #1a1c1f;
+  --ink: #c3c6cb;
+  --muted: #8b8f96;
+  --surface: #202328;
+  --line: #2e3238;
+  --accent: #7a9bd4;
+  --accent-soft: #232b36;
+  --raise: #212429;
+  --sunk: #15171a;
+  --shadow: 0 8px 24px rgb(0 0 0 / 0.47);
+  color-scheme: dark;
+}
+.theme-black {
+  --paper: #000000;
+  --ink: #d4d4d8;
+  --muted: #8a8a93;
+  --surface: #000000;
+  --line: #27272a;
+  --accent: #60a5fa;
+  --accent-soft: #0c1e33;
+  --raise: #0d0d0f;
+  --sunk: #070708;
+  --shadow: 0 8px 24px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+/* A toolbar button with the app's metrics: 36 pt square, radius 8, hover = line. */
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  color: var(--ink);
+  cursor: pointer;
+  flex: none;
+  transition: background-color 80ms linear, color 80ms linear;
+  -webkit-tap-highlight-color: transparent;
+}
+.icon-btn:hover {
+  background: var(--line);
+}
+.icon-btn:focus-visible,
+.focusable:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.icon-btn[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* The 24-unit grid behind a specimen. */
+.stage-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--ink) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--ink) 7%, transparent) 1px, transparent 1px);
+  background-size: calc(100% / 24) calc(100% / 24);
+  background-position: -0.5px -0.5px;
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .code {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.65;
+    tab-size: 4;
+  }
+}
+
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+input[type="range"].slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 18px;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"].slider::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: 2px;
+  background: var(--line);
+}
+input[type="range"].slider::-moz-range-track {
+  height: 2px;
+  border-radius: 2px;
+  background: var(--line);
+}
+input[type="range"].slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 3px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--line);
+  transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+input[type="range"].slider::-moz-range-thumb {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 3px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--line);
+}
+input[type="range"].slider:active::-webkit-slider-thumb {
+  transform: scale(1.25);
+}
+input[type="range"].slider:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.sheet-in {
+  animation: sheet-in 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise,
+  .sheet-in {
+    animation: none;
+  }
+}
